@@ -101,6 +101,26 @@ Para conservar datos aunque elimines el contenedor, monta un volumen:
 docker run -p 8000:8000 -v "$(pwd)/app/data:/app/app/data" ruta-limpia-tempcheck
 ```
 
+## Desplegar en Render
+
+El repositorio incluye `render.yaml`, así que Render puede detectar la configuración automáticamente.
+
+1. Entra a `https://render.com`.
+2. Crea una cuenta o inicia sesión.
+3. Selecciona `New` > `Blueprint`.
+4. Conecta el repositorio `A625A/TemptCheck`.
+5. Confirma la creación del servicio `temptcheck`.
+6. Espera a que termine el deploy y abre la URL pública que Render genera.
+
+Configuración usada por Render:
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
+```
+
+Nota: en el plan gratuito, Render puede pausar la app cuando no recibe visitas. La primera carga después de una pausa puede tardar un poco.
+
 ## Limitaciones del MVP
 
 - No mide temperatura real.
