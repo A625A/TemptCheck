@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Ruta Limpia TempCheck{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">RL</span>
+        <span>
+          <strong>Ruta Limpia TempCheck</strong>
+          <small>Control operativo de traslado</small>
+        </span>
+      </a>
+      <span class="header-note">MVP sin sensores reales</span>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

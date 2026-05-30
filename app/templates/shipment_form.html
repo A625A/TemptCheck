@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | Ruta Limpia TempCheck{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% if mode == 'edit' %}/entregas/{{ shipment.id }}{% else %}/{% endif %}">Cancelar y volver</a>
+
+<section class="page-hero form-hero">
+  <div>
+    <h1>{{ title }}</h1>
+    <p class="subtitle">Condiciones operativas para estimar riesgo de temperatura.</p>
+  </div>
+</section>
+
+<section class="panel form-panel">
+  <form class="form-grid" method="post" action="{{ action_url }}">
+    <h2 class="full-width">Datos de entrega</h2>
+    <label>Código de entrega
+      <input name="codigo" type="text" value="{{ shipment.codigo }}" required placeholder="RL-005">
+    </label>
+    <label>Producto
+      <input name="producto" type="text" value="{{ shipment.producto }}" required placeholder="Nombre del producto">
+    </label>
+    <label>Tipo de producto
+      <select name="tipo_producto" id="product-type-select">
+        {% for option in product_types %}
+        <option value="{{ option }}" data-range="{{ temperature_ranges[option] }}" {% if shipment.tipo_producto == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Rango requerido
+      <input id="temperature-range-preview" type="text" value="{{ shipment.rango_requerido }}" readonly>
+    </label>
+    <label>Sucursal destino
+      <input name="sucursal_destino" type="text" value="{{ shipment.sucursal_destino }}" required placeholder="Zona 10">
+    </label>
+    <label>Conductor
+      <input name="conductor" type="text" value="{{ shipment.conductor }}" required placeholder="Nombre del conductor">
+    </label>
+    <label>Vehículo
+      <input name="vehiculo" type="text" value="{{ shipment.vehiculo }}" required placeholder="Unidad 01">
+    </label>
+
+    <h2 class="full-width form-section-title">Condiciones de temperatura</h2>
+    <label>Tiempo estimado de traslado
+      <select name="tiempo_traslado">
+        {% for option in transfer_times %}
+        <option value="{{ option }}" {% if shipment.tiempo_traslado == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Tiempo de exposición
+      <select name="tiempo_exposicion">
+        {% for option in exposure_times %}
+        <option value="{{ option }}" {% if shipment.tiempo_exposicion == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Estado del vehículo
+      <select name="estado_vehiculo">
+        {% for option in vehicle_statuses %}
+        <option value="{{ option }}" {% if shipment.estado_vehiculo == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Condición de carga
+      <select name="condicion_carga">
+        {% for option in load_conditions %}
+        <option value="{{ option }}" {% if shipment.condicion_carga == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Almacenamiento en sucursal
+      <select name="almacenamiento_sucursal">
+        {% for option in branch_storage_options %}
+        <option value="{{ option }}" {% if shipment.almacenamiento_sucursal == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label class="full-width">Observaciones
+      <textarea name="observaciones" rows="4" placeholder="Anota condiciones especiales del traslado">{{ shipment.observaciones }}</textarea>
+    </label>
+    <div class="form-actions full-width">
+      <button class="button" type="submit">Guardar entrega</button>
+      <a class="button secondary" href="{% if mode == 'edit' %}/entregas/{{ shipment.id }}{% else %}/{% endif %}">Cancelar</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

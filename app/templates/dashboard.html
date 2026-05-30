@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Ruta Limpia TempCheck{% endblock %}
+
+{% block content %}
+<section class="page-hero compact">
+  <div>
+    <p class="eyebrow">PROYECTO MURIEL</p>
+    <h1>Ruta Limpia TempCheck</h1>
+    <p class="subtitle">Control operativo del riesgo de temperatura durante traslado</p>
+  </div>
+  <div class="hero-note">
+    Prototipo sin sensores reales.
+  </div>
+</section>
+
+<section class="toolbar">
+  <form class="filter-form" method="get" action="/">
+    <label class="search-field">Buscar entrega
+      <input name="q" type="search" value="{{ q }}" placeholder="Código, producto, sucursal...">
+    </label>
+    <label>Riesgo
+      <select name="risk_filter">
+        {% for option in ["Todos", "Bajo", "Medio", "Alto"] %}
+        <option value="{{ option }}" {% if risk_filter == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Tipo de producto
+      <select name="product_filter">
+        <option value="Todos" {% if product_filter == "Todos" %}selected{% endif %}>Todos</option>
+        {% for option in product_types %}
+        <option value="{{ option }}" {% if product_filter == option %}selected{% endif %}>{{ option }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button class="button" type="submit">Filtrar</button>
+  </form>
+  <a class="button add-button" href="/entregas/nueva">Agregar entrega</a>
+</section>
+
+<section class="metrics-grid" aria-label="Resumen de entregas">
+  <article class="metric-card">
+    <span>Total</span>
+    <strong>{{ total_count }}</strong>
+  </article>
+  <article class="metric-card metric-low">
+    <span>Estado normal</span>
+    <strong>{{ counts["Bajo"] }}</strong>
+  </article>
+  <article class="metric-card metric-medium">
+    <span>Alertas medias</span>
+    <strong>{{ counts["Medio"] }}</strong>
+  </article>
+  <article class="metric-card metric-high">
+    <span>Entregas críticas</span>
+    <strong>{{ counts["Alto"] }}</strong>
+  </article>
+</section>
+
+<section class="section-heading list-heading">
+  <div>
+    <h2>Entregas</h2>
+    <p>{{ shipments|length }} entrega(s) visibles.</p>
+  </div>
+</section>
+
+{% if shipments %}
+<section class="temperature-card-grid">
+  {% for shipment in shipments %}
+  <article class="temp-card {% if shipment.recepcion.cerrada %}closed-card{% else %}accent-{{ shipment.risk.risk_level|lower }}{% endif %}">
+    <div class="temp-card-header">
+      <div>
+        <p class="code-label">{{ shipment.codigo }}</p>
+        <h3>{{ shipment.producto }}</h3>
+      </div>
+      {% if shipment.recepcion.cerrada %}
+      <span class="status-badge closed">Cerrada</span>
+      {% else %}
+      <span class="risk-badge {{ risk_css_class(shipment.risk.risk_level) }}">{{ shipment.risk.risk_level }}</span>
+      {% endif %}
+    </div>
+    <div class="temp-meta">
+      <p><span>Tipo</span><strong>{{ shipment.tipo_producto }}</strong></p>
+      <p><span>Sucursal</span><strong>{{ shipment.sucursal_destino }}</strong></p>
+      <p><span>Rango requerido</span><strong>{{ shipment.rango_requerido }}</strong></p>
+    </div>
+
+    <div class="temp-card-footer">
+      {% if shipment.recepcion.cerrada %}
+      <a class="button" href="/entregas/{{ shipment.id }}/resumen">Revisar estado</a>
+      <a class="text-action" href="/entregas/{{ shipment.id }}">Ver detalles</a>
+      {% else %}
+      <a class="button" href="/entregas/{{ shipment.id }}">Ver detalle</a>
+      <a class="text-action" href="/entregas/{{ shipment.id }}/editar">Editar</a>
+      {% endif %}
+      <form method="post" action="/entregas/{{ shipment.id }}/eliminar" data-confirm-delete>
+        <button class="text-action danger" type="submit">Eliminar</button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section class="empty-state panel">
+  <h2>No se encontraron entregas</h2>
+  <p>Ajusta los filtros o agrega una nueva entrega para continuar evaluando riesgo operativo de temperatura.</p>
+  <a class="button" href="/entregas/nueva">Agregar entrega</a>
+</section>
+{% endif %}
+{% endblock %}

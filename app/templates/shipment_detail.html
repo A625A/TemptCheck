@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}{{ shipment.producto }} | Ruta Limpia TempCheck{% endblock %}
+
+{% block content %}
+<div class="page-actions">
+  <a class="back-link" href="/">Volver al dashboard</a>
+  <a class="button secondary" href="/entregas/{{ shipment.id }}/editar">Editar entrega</a>
+</div>
+
+<section class="detail-header">
+  <div>
+    <p class="eyebrow">{{ shipment.codigo }}</p>
+    <h1>{{ shipment.producto }}</h1>
+    <p class="subtitle">{{ shipment.sucursal_destino }} · {{ shipment.tipo_producto }}</p>
+  </div>
+  <span class="risk-badge large {{ risk_css_class(risk.risk_level) }}">
+    Riesgo {{ risk.risk_level }}
+  </span>
+  {% if shipment.recepcion.cerrada %}
+  <span class="status-badge closed">Entrega cerrada</span>
+  {% endif %}
+</section>
+
+<section class="summary-strip">
+  <article>
+    <span>Rango requerido</span>
+    <strong>{{ shipment.rango_requerido }}</strong>
+  </article>
+  <article>
+    <span>Sucursal</span>
+    <strong>{{ shipment.sucursal_destino }}</strong>
+  </article>
+  <article>
+    <span>Conductor</span>
+    <strong>{{ shipment.conductor }}</strong>
+  </article>
+</section>
+
+<section class="risk-panel {{ risk_css_class(risk.risk_level) }}">
+  <div class="risk-panel-main">
+    <span class="risk-badge {{ risk_css_class(risk.risk_level) }}">{{ risk.risk_level }}</span>
+    <h2>Riesgo operativo de temperatura</h2>
+    <p class="risk-range">Rango requerido: <strong>{{ shipment.rango_requerido }}</strong></p>
+    <p class="score-line">{{ risk.risk_score }} puntos</p>
+    <p class="short-text">{{ risk.explanation }}</p>
+
+    {% if risk.risk_level == "Alto" %}
+    <strong>Riesgo alto de pérdida de calidad por temperatura.</strong>
+    <p>Revisar condiciones de traslado antes de venta o recepción final.</p>
+    {% elif risk.risk_level == "Medio" %}
+    <strong>Riesgo medio. Se recomienda seguimiento.</strong>
+    <p>Confirmar almacenamiento inmediato y revisar observaciones.</p>
+    {% else %}
+    <strong>Riesgo bajo. Procedimiento dentro de condiciones esperadas.</strong>
+    <p>Mantener control estándar.</p>
+    {% endif %}
+  </div>
+  <div class="risk-panel-side">
+    <h3>Factores que influyeron</h3>
+    <ul class="pill-list">
+      {% for factor in risk.risk_factors %}
+      <li>{{ factor }}</li>
+      {% endfor %}
+    </ul>
+    <h3>Recomendación</h3>
+    <p>{{ risk.recommendations[0] }}</p>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <div>
+      <h2>Variables operativas</h2>
+      <p>Condiciones usadas para calcular el riesgo.</p>
+    </div>
+  </div>
+  <div class="ops-grid">
+    <p><span>Traslado</span><strong>{{ shipment.tiempo_traslado }}</strong></p>
+    <p><span>Exposición</span><strong>{{ shipment.tiempo_exposicion }}</strong></p>
+    <p><span>Vehículo</span><strong>{{ shipment.estado_vehiculo }}</strong></p>
+    <p><span>Carga</span><strong>{{ shipment.condicion_carga }}</strong></p>
+    <p><span>Sucursal</span><strong>{{ shipment.almacenamiento_sucursal }}</strong></p>
+  </div>
+</section>
+
+<details class="panel collapsible">
+  <summary>Checklist previo al traslado</summary>
+    <form method="post" action="/entregas/{{ shipment.id }}/checklist">
+      <div class="checklist">
+        {% for item in checklist_items %}
+        <label class="check-item">
+          <input type="checkbox" name="{{ item }}" {% if shipment.checklist[item] %}checked{% endif %}>
+          <span>{{ item }}</span>
+        </label>
+        {% endfor %}
+      </div>
+      <button class="button secondary" type="submit">Guardar checklist</button>
+    </form>
+</details>
+
+<details class="panel collapsible">
+    <summary>Acciones correctivas</summary>
+    {% if shipment.acciones_correctivas %}
+    <ol class="action-list">
+      {% for action in shipment.acciones_correctivas %}
+      <li>{{ action }}</li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p class="muted">Aún no hay acciones correctivas registradas.</p>
+    {% endif %}
+
+    <form class="stack-form" method="post" action="/entregas/{{ shipment.id }}/acciones">
+      <label>Acción
+        <select name="accion" id="action-select">
+          {% for option in action_options %}
+          <option value="{{ option }}">{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Observación corta
+        <input name="observacion_accion" type="text" placeholder="Ej. Se llamó a sucursal antes de salir">
+      </label>
+      <button class="button secondary" type="submit">Registrar acción</button>
+    </form>
+</details>
+
+<details class="panel collapsible">
+  <summary>Recepción en sucursal</summary>
+  {% if shipment.recepcion.cerrada %}
+  <div class="receipt-grid">
+    <div><span>Buen estado</span><strong>{{ shipment.recepcion.producto_buen_estado }}</strong></div>
+    <div><span>Almacenado inmediato</span><strong>{{ shipment.recepcion.almacenado_inmediatamente }}</strong></div>
+    <div><span>Problema visible</span><strong>{{ shipment.recepcion.problema_visible }}</strong></div>
+  </div>
+  <p>{{ shipment.recepcion.observaciones or "Sin observaciones de recepción." }}</p>
+  <a class="button secondary" href="/entregas/{{ shipment.id }}/resumen">Ver resumen final</a>
+  {% else %}
+  <div class="section-heading">
+    <div>
+      <p>Completa esta sección al llegar para cerrar la entrega y generar el resumen final.</p>
+    </div>
+  </div>
+
+  <form class="form-grid" method="post" action="/entregas/{{ shipment.id }}/recepcion">
+    <label>Producto recibido en buen estado
+      <select name="producto_buen_estado" required>
+        <option value="">Seleccionar</option>
+        <option value="Sí" {% if shipment.recepcion.producto_buen_estado == "Sí" %}selected{% endif %}>Sí</option>
+        <option value="No" {% if shipment.recepcion.producto_buen_estado == "No" %}selected{% endif %}>No</option>
+      </select>
+    </label>
+    <label>Producto almacenado inmediatamente
+      <select name="almacenado_inmediatamente" required>
+        <option value="">Seleccionar</option>
+        <option value="Sí" {% if shipment.recepcion.almacenado_inmediatamente == "Sí" %}selected{% endif %}>Sí</option>
+        <option value="No" {% if shipment.recepcion.almacenado_inmediatamente == "No" %}selected{% endif %}>No</option>
+      </select>
+    </label>
+    <label>Hubo problema visible
+      <select name="problema_visible" required>
+        <option value="">Seleccionar</option>
+        <option value="Sí" {% if shipment.recepcion.problema_visible == "Sí" %}selected{% endif %}>Sí</option>
+        <option value="No" {% if shipment.recepcion.problema_visible == "No" %}selected{% endif %}>No</option>
+      </select>
+    </label>
+    <label class="full-width">Observaciones de recepción
+      <textarea name="observaciones_recepcion" rows="3">{{ shipment.recepcion.observaciones }}</textarea>
+    </label>
+    <button class="button full-width" type="submit">Cerrar entrega</button>
+  </form>
+  {% endif %}
+</details>
+
+<details class="panel collapsible">
+  <summary>Observaciones</summary>
+  <p>{{ shipment.observaciones or "Sin observaciones." }}</p>
+</details>
+{% endblock %}

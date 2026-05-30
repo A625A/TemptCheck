@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Resumen | {{ shipment.producto }}{% endblock %}
+
+{% block content %}
+<a class="back-link" href="/entregas/{{ shipment.id }}">Volver al detalle</a>
+
+<section class="detail-header">
+  <div>
+    <p class="eyebrow">Resumen final · {{ shipment.codigo }}</p>
+    <h1>{{ shipment.producto }}</h1>
+    <p class="subtitle">{{ shipment.tipo_producto }} · {{ shipment.rango_requerido }} · {{ shipment.sucursal_destino }} · {{ shipment.conductor }} · {{ shipment.vehiculo }}</p>
+  </div>
+  <div class="risk-summary {{ risk_css_class(risk.risk_level) }}">
+    <span>Nivel final</span>
+    <strong>{{ risk.risk_level }}</strong>
+    <small>{{ risk.risk_score }} puntos</small>
+  </div>
+</section>
+
+<section class="panel summary-panel">
+  <h2>{{ conclusion }}</h2>
+  <p>{{ risk.explanation }}</p>
+</section>
+
+<div class="summary-grid">
+  <section class="panel">
+    <h2>Checklist completado</h2>
+    <p class="big-number">{{ checklist_done }} / {{ checklist_total }}</p>
+    <ul class="clean-list">
+      {% for item, done in shipment.checklist.items() %}
+      <li class="{% if done %}done{% else %}pending{% endif %}">
+        {{ "✓" if done else "Pendiente:" }} {{ item }}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h2>Acciones correctivas</h2>
+    {% if shipment.acciones_correctivas %}
+    <ol class="action-list">
+      {% for action in shipment.acciones_correctivas %}
+      <li>{{ action }}</li>
+      {% endfor %}
+    </ol>
+    {% else %}
+    <p class="muted">No se registraron acciones correctivas.</p>
+    {% endif %}
+  </section>
+</div>
+
+<section class="panel">
+  <h2>Estado de recepción</h2>
+  <div class="receipt-grid">
+    <div><span>Producto recibido en buen estado</span><strong>{{ shipment.recepcion.producto_buen_estado or "Pendiente" }}</strong></div>
+    <div><span>Almacenado inmediatamente</span><strong>{{ shipment.recepcion.almacenado_inmediatamente or "Pendiente" }}</strong></div>
+    <div><span>Hubo problema visible</span><strong>{{ shipment.recepcion.problema_visible or "Pendiente" }}</strong></div>
+  </div>
+  <div class="note-box">
+    <strong>Observaciones operativas:</strong>
+    <p>{{ shipment.observaciones or "Sin observaciones." }}</p>
+    <strong>Observaciones de recepción:</strong>
+    <p>{{ shipment.recepcion.observaciones or "Sin observaciones." }}</p>
+  </div>
+</section>
+{% endblock %}

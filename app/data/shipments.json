@@ -1,0 +1,165 @@
+[
+  {
+    "id": 1,
+    "codigo": "RL-001",
+    "producto": "Galletas empacadas",
+    "tipo_producto": "Ambiente",
+    "rango_requerido": "15°C a 25°C",
+    "sucursal_destino": "Zona 10",
+    "conductor": "Carlos Méndez",
+    "vehiculo": "Unidad 01",
+    "tiempo_traslado": "Menos de 30 minutos",
+    "tiempo_exposicion": "Menos de 5 minutos",
+    "estado_vehiculo": "Listo / adecuado",
+    "condicion_carga": "Cargado inmediatamente",
+    "almacenamiento_sucursal": "Recibido y almacenado inmediatamente",
+    "observaciones": "Entrega regular de producto ambiente.",
+    "checklist": {
+      "Producto preparado correctamente.": false,
+      "Producto cargado sin espera prolongada.": false,
+      "Vehículo revisado antes de salida.": false,
+      "Ruta confirmada.": false,
+      "Encargado de sucursal informado.": false,
+      "Producto será almacenado inmediatamente al llegar.": false
+    },
+    "acciones_correctivas": [],
+    "recepcion": {
+      "producto_buen_estado": "",
+      "almacenado_inmediatamente": "",
+      "problema_visible": "",
+      "observaciones": "",
+      "cerrada": false
+    }
+  },
+  {
+    "id": 2,
+    "codigo": "RL-002",
+    "producto": "Pastel refrigerado",
+    "tipo_producto": "Refrigerado",
+    "rango_requerido": "2°C a 8°C",
+    "sucursal_destino": "Carretera a El Salvador",
+    "conductor": "Luis García",
+    "vehiculo": "Unidad 04",
+    "tiempo_traslado": "30 a 60 minutos",
+    "tiempo_exposicion": "5 a 15 minutos",
+    "estado_vehiculo": "Listo / adecuado",
+    "condicion_carga": "Esperó antes de cargar",
+    "almacenamiento_sucursal": "Recibido con espera",
+    "observaciones": "Validar almacenamiento inmediato en sucursal.",
+    "checklist": {
+      "Producto preparado correctamente.": true,
+      "Producto cargado sin espera prolongada.": false,
+      "Vehículo revisado antes de salida.": false,
+      "Ruta confirmada.": false,
+      "Encargado de sucursal informado.": false,
+      "Producto será almacenado inmediatamente al llegar.": false
+    },
+    "acciones_correctivas": [],
+    "recepcion": {
+      "producto_buen_estado": "",
+      "almacenado_inmediatamente": "",
+      "problema_visible": "",
+      "observaciones": "",
+      "cerrada": false
+    }
+  },
+  {
+    "id": 3,
+    "codigo": "RL-003",
+    "producto": "Producto congelado",
+    "tipo_producto": "Congelado",
+    "rango_requerido": "-18°C o menor",
+    "sucursal_destino": "Oakland",
+    "conductor": "Mario López",
+    "vehiculo": "Unidad 07",
+    "tiempo_traslado": "Más de 2 horas",
+    "tiempo_exposicion": "Más de 30 minutos",
+    "estado_vehiculo": "No confirmado",
+    "condicion_carga": "Exposición prolongada",
+    "almacenamiento_sucursal": "No confirmado",
+    "observaciones": "Caso de alto riesgo para demostrar alertas y acciones.",
+    "checklist": {
+      "Producto preparado correctamente.": false,
+      "Producto cargado sin espera prolongada.": false,
+      "Vehículo revisado antes de salida.": false,
+      "Ruta confirmada.": false,
+      "Encargado de sucursal informado.": false,
+      "Producto será almacenado inmediatamente al llegar.": false
+    },
+    "acciones_correctivas": [],
+    "recepcion": {
+      "producto_buen_estado": "",
+      "almacenado_inmediatamente": "",
+      "problema_visible": "",
+      "observaciones": "",
+      "cerrada": false
+    }
+  },
+  {
+    "id": 4,
+    "codigo": "RL-004",
+    "producto": "Base delicada refrigerada",
+    "tipo_producto": "Refrigerado",
+    "rango_requerido": "2°C a 8°C",
+    "sucursal_destino": "San Cristóbal",
+    "conductor": "José Ramírez",
+    "vehiculo": "Unidad 03",
+    "tiempo_traslado": "1 a 2 horas",
+    "tiempo_exposicion": "15 a 30 minutos",
+    "estado_vehiculo": "Pendiente de revisión",
+    "condicion_carga": "Esperó antes de cargar",
+    "almacenamiento_sucursal": "No confirmado",
+    "observaciones": "Pendiente de revisión previa a salida.",
+    "checklist": {
+      "Producto preparado correctamente.": false,
+      "Producto cargado sin espera prolongada.": false,
+      "Vehículo revisado antes de salida.": false,
+      "Ruta confirmada.": false,
+      "Encargado de sucursal informado.": false,
+      "Producto será almacenado inmediatamente al llegar.": false
+    },
+    "acciones_correctivas": [],
+    "recepcion": {
+      "producto_buen_estado": "",
+      "almacenado_inmediatamente": "",
+      "problema_visible": "",
+      "observaciones": "",
+      "cerrada": false
+    }
+  },
+  {
+    "id": 5,
+    "codigo": "RL-PraticaVirtual",
+    "producto": "ChocoBanano",
+    "tipo_producto": "Congelado",
+    "rango_requerido": "-18°C o menor",
+    "sucursal_destino": "zona 11",
+    "conductor": "Juan Carlos",
+    "vehiculo": "Unidad M6",
+    "tiempo_traslado": "30 a 60 minutos",
+    "tiempo_exposicion": "Menos de 5 minutos",
+    "estado_vehiculo": "Pendiente de revisión",
+    "condicion_carga": "Cargado inmediatamente",
+    "almacenamiento_sucursal": "Recibido y almacenado inmediatamente",
+    "observaciones": "Revise temperature del vehicular antes de Cargar",
+    "checklist": {
+      "Producto preparado correctamente.": true,
+      "Producto cargado sin espera prolongada.": true,
+      "Vehículo revisado antes de salida.": true,
+      "Ruta confirmada.": true,
+      "Encargado de sucursal informado.": true,
+      "Producto será almacenado inmediatamente al llegar.": true
+    },
+    "acciones_correctivas": [
+      "Marcar producto para revisión al llegar. Nota: Se esta descongelado los productos en el envio",
+      "Marcar producto para revisión al llegar. Nota: Se esta descongelado los productos en el envio"
+    ],
+    "recepcion": {
+      "producto_buen_estado": "Sí",
+      "almacenado_inmediatamente": "Sí",
+      "problema_visible": "Sí",
+      "observaciones": "Productos llegaron un poco descogelados, peo nada se perdio\r\n",
+      "cerrada": true
+    }
+  }
+]

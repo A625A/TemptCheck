@@ -56,6 +56,22 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 Usa `http://`, no `https://`, salvo que tengas un proxy TLS delante.
 
+## Abrir en GitHub Codespaces
+
+1. Sube estos archivos a GitHub.
+2. Abre el repositorio en GitHub: `https://github.com/A625A/TemptCheck`
+3. Presiona `Code` > `Codespaces` > `Create codespace on main`.
+4. Espera a que Codespaces instale las dependencias y arranque la app.
+5. Abre el puerto `8000` cuando aparezca la vista previa.
+
+Codespaces usa la configuración de `.devcontainer/devcontainer.json` para instalar `requirements.txt`, ejecutar:
+
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+y abrir la app automáticamente en el puerto `8000`.
+
 ## Persistencia de datos
 
 La app guarda entregas, ediciones, checklist, acciones correctivas y cierres de recepción en:
