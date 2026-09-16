@@ -1,109 +1,58 @@
 # TempCheck
 
-> MVP demo developed for **Muriel** to explore temperature-risk controls during product transportation.
+MVP demo built for **Muriel** to test a digital workflow for managing temperature-related risk during product transportation.
 
-TempCheck is an internal web prototype designed to help operational teams review deliveries, assess temperature-related risk, document preventive actions, and close product receptions using a structured digital workflow.
+The idea came from a simple limitation: Muriel did not have IoT sensors or dataloggers available to automatically monitor temperature during deliveries.
 
-## Problem
+Instead of simulating sensor readings, the prototype uses information that employees could actually enter themselves.
 
-Some products can lose quality during transportation because of factors such as:
+## What It Does
 
-- Prolonged exposure outside appropriate storage
-    
-- Weak cold-chain controls
-    
-- Vehicle condition
-    
-- Product handling
-    
-- Delays
-    
-- Loading conditions
-    
-- Storage readiness at the destination
-    
+The workflow allows users to:
 
-Muriel did not have automatic IoT temperature sensors or dataloggers available for this prototype.
-
-Instead of inventing measurements that do not exist, TempCheck focuses on information that employees can realistically record during an operational process.
-
-## Objective
-
-The MVP explores whether a lightweight digital workflow can help employees:
-
-1. Review active deliveries.
+- Review active deliveries
     
-2. Identify operational temperature risk.
+- Check transportation conditions
     
-3. Complete preventive checklists.
+- Assess operational risk
     
-4. Document corrective actions.
+- Complete a checklist
     
-5. Close product reception.
+- Register corrective actions
     
-6. Maintain a simple record of the process.
+- Close a reception
+    
+- Review a final summary
     
 
-## How It Works
+## Risk Score
 
-Each delivery includes operational information used to evaluate its potential temperature risk.
+The prototype uses information such as:
 
-The prototype considers factors including:
-
-- Product storage requirement
+- Product type
     
 - Estimated transportation time
     
-- Approximate exposure time
+- Approximate time outside proper storage
     
 - Vehicle condition
     
 - Loading condition
     
-- Destination storage condition
+- Storage conditions at the destination
     
 
-These variables are converted into a simple risk score.
-
-## Temperature Risk Index
-
-The current prototype uses an explainable rule-based score.
+These inputs are converted into a simple score:
 
 ```text
-0–3 points  → Low Risk
-4–6 points  → Medium Risk
-7+ points   → High Risk
+0–3  → Low Risk
+4–6  → Medium Risk
+7+   → High Risk
 ```
 
-The goal is not to claim scientific temperature prediction.
+This is a rule-based score for the MVP, not a validated predictive model.
 
-The score is used to demonstrate how operational information could be structured into an easy-to-understand decision-support tool.
-
-## Workflow
-
-```text
-Active Delivery
-      │
-      ▼
-Review Conditions
-      │
-      ▼
-Risk Assessment
-      │
-      ▼
-Operational Checklist
-      │
-      ▼
-Corrective Actions
-      │
-      ▼
-Reception Closure
-      │
-      ▼
-Final Summary
-```
-
-## Tech Stack
+## Stack
 
 - Python
     
@@ -119,75 +68,42 @@ Final Summary
     
 - Docker
     
-- JSON-based persistence
-    
-- Render deployment configuration
-    
 
-## Data Persistence
+## Data
 
-The current MVP stores:
+The application currently stores:
 
 - Deliveries
     
-- Delivery edits
-    
 - Checklist responses
+    
+- Changes to deliveries
     
 - Corrective actions
     
 - Reception closures
     
 
-inside:
+in:
 
 ```text
 app/data/shipments.json
 ```
 
-If the file does not exist, the application can create it using initial demo data.
-
-## Important Data Limitation
-
-TempCheck currently uses **simulated data**.
-
-It does not:
-
-- Read real temperature sensors
-    
-- Connect to IoT devices
-    
-- Connect to dataloggers
-    
-- Automatically measure cold-chain conditions
-    
-
-This is intentional.
-
-The MVP was built to validate the workflow and product concept before investing in additional hardware or infrastructure.
+The initial data is simulated.
 
 ## Run Locally
-
-Create a Python environment:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-```
 
-Install dependencies:
-
-```bash
 pip install -r requirements.txt
-```
 
-Start the application:
-
-```bash
 uvicorn app.main:app --reload
 ```
 
-Open:
+Then open:
 
 ```text
 http://127.0.0.1:8000
@@ -195,19 +111,12 @@ http://127.0.0.1:8000
 
 ## Docker
 
-Build the image:
-
 ```bash
 docker build -t tempcheck .
-```
-
-Run the container:
-
-```bash
 docker run -p 8000:8000 tempcheck
 ```
 
-To persist local application data:
+To keep local data after removing the container:
 
 ```bash
 docker run \
@@ -218,76 +127,55 @@ docker run \
 
 ## GitHub Codespaces
 
-The repository includes a development-container configuration.
+The repository includes a dev-container configuration.
 
-A Codespace can run the application using:
+The application can be started with:
 
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Deployment
+## Render
 
-The repository includes:
+The repository also includes:
 
 ```text
 render.yaml
 ```
 
-for deployment through Render.
-
-The application can be started in a hosted environment with:
-
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
+for deployment on Render.
 
 ## Current Limitations
 
-TempCheck is an MVP designed for concept validation.
-
-Current limitations include:
-
-- Simulated operational data
+- Uses simulated data
     
-- No real temperature measurements
+- No real temperature sensors
     
-- No IoT integration
+- No IoT or datalogger integration
     
-- No production database
+- JSON persistence instead of a database
     
-- JSON-based persistence
+- No user authentication
     
-- No authentication or role-based access
+- No role-based permissions
     
-- Rule-based risk score rather than a validated predictive model
+- Risk score is rule-based
     
 
-## Possible Next Steps
+## Next Steps
 
-Future versions could include:
+Possible improvements include:
 
-- PostgreSQL persistence
+- PostgreSQL
     
-- Factory, transportation, and branch user roles
+- User roles for factory, transport, and branches
     
-- Historical delivery reporting
+- Historical delivery reports
     
-- Real sensor or datalogger integration
+- Sensor or datalogger integration
     
-- Delivery analytics
-    
-- PDF summary exports
-    
-- Product-specific temperature requirements
-    
-- More advanced risk validation
+- PDF summaries
     
 - Alerts for high-risk deliveries
     
-
-## Project Context
-
-TempCheck was built as a **demo MVP for Muriel**.
-
-Its purpose is to demonstrate a possible operational workflow and test the usefulness of the concept before building a production system.
+- More detailed rules by product type
