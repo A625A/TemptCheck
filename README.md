@@ -1,4 +1,10 @@
-# Ruta Limpia TempCheck
+# TempCheck
+
+> MVP prototype developed for Muriel to explore temperature-risk controls during product transportation.
+
+Built with FastAPI, Jinja2, HTML/CSS/JavaScript and Docker.
+
+The prototype helps operational teams review active deliveries, assess temperature-related risk, complete checklists, record corrective actions, and close receptions with a final summary.
 
 Prototipo MVP web para Muriel construido con FastAPI, Jinja2, HTML, CSS y JavaScript ligero.
 
