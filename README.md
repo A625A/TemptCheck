@@ -1,147 +1,293 @@
 # TempCheck
 
-> MVP prototype developed for Muriel to explore temperature-risk controls during product transportation.
+> MVP demo developed for **Muriel** to explore temperature-risk controls during product transportation.
 
-Built with FastAPI, Jinja2, HTML/CSS/JavaScript and Docker.
+TempCheck is an internal web prototype designed to help operational teams review deliveries, assess temperature-related risk, document preventive actions, and close product receptions using a structured digital workflow.
 
-The prototype helps operational teams review active deliveries, assess temperature-related risk, complete checklists, record corrective actions, and close receptions with a final summary.
+## Problem
 
-Prototipo MVP web para Muriel construido con FastAPI, Jinja2, HTML, CSS y JavaScript ligero.
+Some products can lose quality during transportation because of factors such as:
 
-## Descripción
+- Prolonged exposure outside appropriate storage
+    
+- Weak cold-chain controls
+    
+- Vehicle condition
+    
+- Product handling
+    
+- Delays
+    
+- Loading conditions
+    
+- Storage readiness at the destination
+    
 
-Ruta Limpia TempCheck es una aplicación web interna para demostrar cómo Muriel puede controlar el riesgo de temperatura durante el traslado de productos desde fábrica hacia sucursales. El sistema permite revisar entregas activas, evaluar riesgo operativo, completar checklist, registrar acciones correctivas, cerrar recepción y ver un resumen final.
+Muriel did not have automatic IoT temperature sensors or dataloggers available for this prototype.
 
-## Problema que resuelve
+Instead of inventing measurements that do not exist, TempCheck focuses on information that employees can realistically record during an operational process.
 
-Durante el traslado, algunos productos pueden perder calidad por exposición prolongada, cadena de frío débil, manipulación, estado del vehículo o falta de coordinación con la sucursal. Este MVP ayuda al personal a documentar y controlar esas condiciones antes y durante la entrega.
+## Objective
 
-## Por qué no usa sensores reales
+The MVP explores whether a lightweight digital workflow can help employees:
 
-Muriel actualmente no cuenta con sensores IoT, dataloggers ni máquinas para tomar temperatura automáticamente durante el transporte. Por eso, el prototipo no inventa lecturas reales de temperatura. La solución inicial se enfoca en control operativo digital usando información que el personal sí puede registrar.
+1. Review active deliveries.
+    
+2. Identify operational temperature risk.
+    
+3. Complete preventive checklists.
+    
+4. Document corrective actions.
+    
+5. Close product reception.
+    
+6. Maintain a simple record of the process.
+    
 
-## Índice de Riesgo de Temperatura
+## How It Works
 
-El riesgo se calcula con un puntaje basado en:
+Each delivery includes operational information used to evaluate its potential temperature risk.
 
-- Tipo de producto: ambiente, refrigerado o congelado.
-- Tiempo estimado de traslado.
-- Tiempo aproximado de exposición fuera de almacenamiento adecuado.
-- Estado del vehículo.
-- Condición de carga.
-- Almacenamiento en sucursal.
+The prototype considers factors including:
 
-Clasificación:
+- Product storage requirement
+    
+- Estimated transportation time
+    
+- Approximate exposure time
+    
+- Vehicle condition
+    
+- Loading condition
+    
+- Destination storage condition
+    
 
-- 0 a 3 puntos: Riesgo Bajo.
-- 4 a 6 puntos: Riesgo Medio.
-- 7 o más puntos: Riesgo Alto.
+These variables are converted into a simple risk score.
 
-Cada entrega muestra explicación y recomendaciones operativas.
+## Temperature Risk Index
 
-## Correr localmente
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-Abre:
+The current prototype uses an explainable rule-based score.
 
 ```text
-http://127.0.0.1:8000
+0–3 points  → Low Risk
+4–6 points  → Medium Risk
+7+ points   → High Risk
 ```
 
-Si necesitas abrir la app desde otro equipo, contenedor o enlace externo, ejecuta:
+The goal is not to claim scientific temperature prediction.
 
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+The score is used to demonstrate how operational information could be structured into an easy-to-understand decision-support tool.
+
+## Workflow
+
+```text
+Active Delivery
+      │
+      ▼
+Review Conditions
+      │
+      ▼
+Risk Assessment
+      │
+      ▼
+Operational Checklist
+      │
+      ▼
+Corrective Actions
+      │
+      ▼
+Reception Closure
+      │
+      ▼
+Final Summary
 ```
 
-Usa `http://`, no `https://`, salvo que tengas un proxy TLS delante.
+## Tech Stack
 
-## Abrir en GitHub Codespaces
+- Python
+    
+- FastAPI
+    
+- Jinja2
+    
+- HTML
+    
+- CSS
+    
+- JavaScript
+    
+- Docker
+    
+- JSON-based persistence
+    
+- Render deployment configuration
+    
 
-1. Sube estos archivos a GitHub.
-2. Abre el repositorio en GitHub: `https://github.com/A625A/TemptCheck`
-3. Presiona `Code` > `Codespaces` > `Create codespace on main`.
-4. Espera a que Codespaces instale las dependencias y arranque la app.
-5. Abre el puerto `8000` cuando aparezca la vista previa.
+## Data Persistence
 
-Codespaces usa la configuración de `.devcontainer/devcontainer.json` para instalar `requirements.txt`, ejecutar:
+The current MVP stores:
 
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
+- Deliveries
+    
+- Delivery edits
+    
+- Checklist responses
+    
+- Corrective actions
+    
+- Reception closures
+    
 
-y abrir la app automáticamente en el puerto `8000`.
-
-## Persistencia de datos
-
-La app guarda entregas, ediciones, checklist, acciones correctivas y cierres de recepción en:
+inside:
 
 ```text
 app/data/shipments.json
 ```
 
-Si el archivo no existe, se crea automáticamente con los datos simulados iniciales.
+If the file does not exist, the application can create it using initial demo data.
 
-## Correr con Docker
+## Important Data Limitation
+
+TempCheck currently uses **simulated data**.
+
+It does not:
+
+- Read real temperature sensors
+    
+- Connect to IoT devices
+    
+- Connect to dataloggers
+    
+- Automatically measure cold-chain conditions
+    
+
+This is intentional.
+
+The MVP was built to validate the workflow and product concept before investing in additional hardware or infrastructure.
+
+## Run Locally
+
+Create a Python environment:
 
 ```bash
-docker build -t ruta-limpia-tempcheck .
-docker run -p 8000:8000 ruta-limpia-tempcheck
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-Abre:
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the application:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-Para conservar datos aunque elimines el contenedor, monta un volumen:
+## Docker
+
+Build the image:
 
 ```bash
-docker run -p 8000:8000 -v "$(pwd)/app/data:/app/app/data" ruta-limpia-tempcheck
+docker build -t tempcheck .
 ```
 
-## Desplegar en Render
-
-El repositorio incluye `render.yaml`, así que Render puede detectar la configuración automáticamente.
-
-1. Entra a `https://render.com`.
-2. Crea una cuenta o inicia sesión.
-3. Selecciona `New` > `Blueprint`.
-4. Conecta el repositorio `A625A/TemptCheck`.
-5. Confirma la creación del servicio `temptcheck`.
-6. Espera a que termine el deploy y abre la URL pública que Render genera.
-
-Configuración usada por Render:
+Run the container:
 
 ```bash
-pip install -r requirements.txt
+docker run -p 8000:8000 tempcheck
+```
+
+To persist local application data:
+
+```bash
+docker run \
+  -p 8000:8000 \
+  -v "$(pwd)/app/data:/app/app/data" \
+  tempcheck
+```
+
+## GitHub Codespaces
+
+The repository includes a development-container configuration.
+
+A Codespace can run the application using:
+
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+## Deployment
+
+The repository includes:
+
+```text
+render.yaml
+```
+
+for deployment through Render.
+
+The application can be started in a hosted environment with:
+
+```bash
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Nota: en el plan gratuito, Render puede pausar la app cuando no recibe visitas. La primera carga después de una pausa puede tardar un poco.
+## Current Limitations
 
-## Limitaciones del MVP
+TempCheck is an MVP designed for concept validation.
 
-- No mide temperatura real.
-- No reemplaza sensores, dataloggers ni controles técnicos.
-- Inicia con datos simulados.
-- Guarda datos en un archivo JSON local, no en una base de datos real.
-- El índice de riesgo es una aproximación para validar la idea.
-- Sirve como prototipo para testear con usuarios, no como sistema final.
+Current limitations include:
 
-## Posibles mejoras futuras
+- Simulated operational data
+    
+- No real temperature measurements
+    
+- No IoT integration
+    
+- No production database
+    
+- JSON-based persistence
+    
+- No authentication or role-based access
+    
+- Rule-based risk score rather than a validated predictive model
+    
 
-- Persistencia en base de datos.
-- Roles para fábrica, transporte y sucursal.
-- Historial de entregas y reportes.
-- Integración futura con sensores o dataloggers si la empresa los adopta.
-- Exportación de resúmenes a PDF.
-- Validaciones operativas más avanzadas por tipo de producto.
-# TemptCheck
+## Possible Next Steps
+
+Future versions could include:
+
+- PostgreSQL persistence
+    
+- Factory, transportation, and branch user roles
+    
+- Historical delivery reporting
+    
+- Real sensor or datalogger integration
+    
+- Delivery analytics
+    
+- PDF summary exports
+    
+- Product-specific temperature requirements
+    
+- More advanced risk validation
+    
+- Alerts for high-risk deliveries
+    
+
+## Project Context
+
+TempCheck was built as a **demo MVP for Muriel**.
+
+Its purpose is to demonstrate a possible operational workflow and test the usefulness of the concept before building a production system.
