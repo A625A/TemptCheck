@@ -25,6 +25,23 @@ The workflow allows users to:
 - Review a final summary
     
 
+## Running App
+
+The screenshots below are captured from the running FastAPI application using the repository's screenshot workflow.
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <a href="assets/screenshots/tempcheck-dashboard.png"><img src="assets/screenshots/tempcheck-dashboard.png" width="520" alt="TempCheck operational dashboard"></a><br>
+      <strong>Operational dashboard</strong>
+    </td>
+    <td width="50%" align="center">
+      <a href="assets/screenshots/tempcheck-risk-detail.png"><img src="assets/screenshots/tempcheck-risk-detail.png" width="520" alt="TempCheck delivery risk detail"></a><br>
+      <strong>Risk detail and recommendation</strong>
+    </td>
+  </tr>
+</table>
+
 ## Risk Score
 
 The prototype uses information such as:
