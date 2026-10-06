@@ -42,20 +42,36 @@ jobs:
               raise SystemExit("TempCheck did not start")
           PY
 
-      - name: Capture real application screenshots
+      - name: Capture complete application workflow
         run: |
           mkdir -p assets/screenshots
           python - <<'PY'
           from playwright.sync_api import sync_playwright
 
+          base = "http://127.0.0.1:8000"
+
           with sync_playwright() as p:
               browser = p.chromium.launch()
-              page = browser.new_page(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
-              page.goto("http://127.0.0.1:8000/", wait_until="networkidle")
-              page.screenshot(path="assets/screenshots/tempcheck-dashboard.png", full_page=True)
+              page = browser.new_page(
+                  viewport={"width": 1440, "height": 1000},
+                  device_scale_factor=1,
+              )
 
-              page.goto("http://127.0.0.1:8000/entregas/3", wait_until="networkidle")
-              page.screenshot(path="assets/screenshots/tempcheck-risk-detail.png", full_page=True)
+              screens = [
+                  ("/", "tempcheck-dashboard.png"),
+                  ("/entregas/nueva", "tempcheck-new-delivery.png"),
+                  ("/entregas/3", "tempcheck-risk-detail.png"),
+                  ("/entregas/3/editar", "tempcheck-edit-delivery.png"),
+                  ("/entregas/3/resumen", "tempcheck-summary.png"),
+              ]
+
+              for route, filename in screens:
+                  page.goto(base + route, wait_until="networkidle")
+                  page.screenshot(
+                      path=f"assets/screenshots/{filename}",
+                      full_page=True,
+                  )
+
               browser.close()
           PY
 
@@ -63,10 +79,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/screenshots/tempcheck-dashboard.png assets/screenshots/tempcheck-risk-detail.png
+          git add assets/screenshots/tempcheck-*.png
           if git diff --cached --quiet; then
             echo "Screenshots unchanged."
           else
-            git commit -m "docs: add real TempCheck screenshots"
+            git commit -m "docs: capture full TempCheck screen set"
             git push
           fi
