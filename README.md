@@ -27,20 +27,43 @@ The workflow allows users to:
 
 ## Running App
 
-The screenshots below are captured from the running FastAPI application using the repository's screenshot workflow.
+The screenshots below are generated from the current running FastAPI application by the repository's screenshot workflow.
 
 <table>
   <tr>
     <td width="50%" align="center">
       <a href="assets/screenshots/tempcheck-dashboard.png"><img src="assets/screenshots/tempcheck-dashboard.png" width="520" alt="TempCheck operational dashboard"></a><br>
-      <strong>Operational dashboard</strong>
+      <strong>Dashboard</strong><br>
+      Review deliveries, filters, and current risk levels.
     </td>
     <td width="50%" align="center">
+      <a href="assets/screenshots/tempcheck-new-delivery.png"><img src="assets/screenshots/tempcheck-new-delivery.png" width="520" alt="TempCheck new delivery form"></a><br>
+      <strong>New delivery</strong><br>
+      Record the operational conditions used by the risk rules.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
       <a href="assets/screenshots/tempcheck-risk-detail.png"><img src="assets/screenshots/tempcheck-risk-detail.png" width="520" alt="TempCheck delivery risk detail"></a><br>
-      <strong>Risk detail and recommendation</strong>
+      <strong>Risk detail</strong><br>
+      Inspect the score, contributing factors, checklist, and recommendation.
+    </td>
+    <td width="50%" align="center">
+      <a href="assets/screenshots/tempcheck-edit-delivery.png"><img src="assets/screenshots/tempcheck-edit-delivery.png" width="520" alt="TempCheck edit delivery form"></a><br>
+      <strong>Edit delivery</strong><br>
+      Update the recorded transport conditions for an existing delivery.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <a href="assets/screenshots/tempcheck-summary.png"><img src="assets/screenshots/tempcheck-summary.png" width="760" alt="TempCheck final delivery summary"></a><br>
+      <strong>Final summary</strong><br>
+      Review the resulting risk level, checklist state, corrective actions, and reception status.
     </td>
   </tr>
 </table>
+
+These are runtime screenshots, not design mockups. The application uses simulated operational data and a transparent rule-based score rather than a validated predictive model.
 
 ## Risk Score
 
