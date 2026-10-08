@@ -4,7 +4,7 @@ MVP demo built for **Muriel** to test a digital workflow for managing temperatur
 
 The idea came from a simple limitation: Muriel did not have IoT sensors or dataloggers available to automatically monitor temperature during deliveries.
 
-Instead of simulating sensor readings, the prototype uses information that employees could actually enter themselves.
+Instead of simulating sensor readings, the prototype uses information that employees could actually enter themselves
 
 ## What It Does
 
